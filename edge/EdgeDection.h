@@ -5,7 +5,7 @@ using namespace std;
 class EdgeDection
 {
 public:
-	int detectBySobel(const Mat& src, Mat& dst, string direction);
+	int detectBySobel(const Mat& src, Mat& dst, string direction = "both");
 };
 
 vector<uchar> createEmptyVector(int size, int value);

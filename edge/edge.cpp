@@ -16,11 +16,11 @@ int main()
     imshow("src", source);
     Mat dst,cvSobel, absCvSobel;
     EdgeDection detector;
-    detector.detectBySobel(source, dst, "x");
+    detector.detectBySobel(source, dst);
     
 
     imshow("dst", dst);
-    Sobel(source, cvSobel, CV_16S,1, 0);
+    Sobel(source, cvSobel, CV_8UC1,1,1);
     convertScaleAbs(cvSobel, absCvSobel);
     imshow("cvSobel", absCvSobel);
     waitKey(0);

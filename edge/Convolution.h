@@ -14,7 +14,7 @@ public:
 	
 	void initSobelYKernel();
 	
-	uchar computeConvolution(vector<uchar> data);
+	float computeConvolution(vector<uchar> data);
 
 };
 

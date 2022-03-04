@@ -48,7 +48,7 @@ void Convolution::initSobelYKernel()
 
 }
 
-uchar Convolution::computeConvolution(vector<uchar> data)
+float Convolution::computeConvolution(vector<uchar> data)
 {
 	/*
 	* Function caculate convolution of data matrix with kernel
@@ -59,5 +59,5 @@ uchar Convolution::computeConvolution(vector<uchar> data)
 	{
 		result += data[i] * this->_kernel[i];
 	}
-	return cv::saturate_cast<uchar>(result); // We must convert back to uchar type
+	return result;
 }
