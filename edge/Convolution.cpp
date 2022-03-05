@@ -93,6 +93,19 @@ void Convolution::initPrewitYKernel()
 	_kernel[8] = -1;
 }
 
+void Convolution::initLaplaceKernel()
+{
+	_kernel[0] = -1;
+	_kernel[1] = -1;
+	_kernel[2] = -1;
+	_kernel[3] = -1;
+	_kernel[4] = 8;
+	_kernel[5] = -1;
+	_kernel[6] = -1;
+	_kernel[7] = -1;
+	_kernel[8] = -1;
+}
+
 float Convolution::computeConvolution(vector<uchar> data)
 {
 	/*

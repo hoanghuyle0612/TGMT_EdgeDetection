@@ -18,6 +18,8 @@ public:
 	void initPrewitXKernel();
 
 	void initPrewitYKernel();
+
+	void initLaplaceKernel();
 	
 	
 	float computeConvolution(vector<uchar> data);
