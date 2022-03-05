@@ -11,16 +11,18 @@ using namespace std;
 int main()
 {
     std::cout << "Hello World!\n";
-    Mat source = imread("download.png", IMREAD_GRAYSCALE);
+    Mat source = imread("download.png", IMREAD_ANYCOLOR);
+    Mat source1 = imread("download.png", IMREAD_ANYCOLOR);
    
     imshow("src", source);
     Mat dst,cvSobel, absCvSobel;
     EdgeDection detector;
-    detector.detectBySobel(source, dst);
+    detector.detectByPrewit(source, dst,"y");
     
 
     imshow("dst", dst);
-    Sobel(source, cvSobel, CV_8UC1,1,1);
+    //Sobel(source, cvSobel, CV_16S,1,1);
+    Laplacian(source1, cvSobel, CV_16S, 1, 0);
     convertScaleAbs(cvSobel, absCvSobel);
     imshow("cvSobel", absCvSobel);
     waitKey(0);

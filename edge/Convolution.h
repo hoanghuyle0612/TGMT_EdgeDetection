@@ -6,6 +6,7 @@ class Convolution
 private:
 	vector<int> _kernel;
 public:
+	Convolution();
 	void setKernel(vector<int> value);
 	
 	vector<int> getKernel();
@@ -13,6 +14,11 @@ public:
 	void initSobelXKernel();
 	
 	void initSobelYKernel();
+
+	void initPrewitXKernel();
+
+	void initPrewitYKernel();
+	
 	
 	float computeConvolution(vector<uchar> data);
 

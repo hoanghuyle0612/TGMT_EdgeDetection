@@ -6,6 +6,8 @@ class EdgeDection
 {
 public:
 	int detectBySobel(const Mat& src, Mat& dst, string direction = "both");
+
+	int detectByPrewit(const Mat& src, Mat& dst, string direction = "both");
 };
 
 vector<uchar> createEmptyVector(int size, int value);
