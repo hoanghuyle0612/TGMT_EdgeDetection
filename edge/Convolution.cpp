@@ -103,6 +103,9 @@ void Convolution::initPrewitYKernel()
 
 void Convolution::initLaplaceKernel()
 {
+	/*
+	* Function to creat kernel 3x3 of Laplace
+	*/
 	_kernel[0] = -1;
 	_kernel[1] = -1;
 	_kernel[2] = -1;

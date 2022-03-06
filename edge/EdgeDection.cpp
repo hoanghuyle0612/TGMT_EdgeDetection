@@ -3,7 +3,7 @@
 int EdgeDection::detectBySobel(const Mat& src, Mat& dst, string direction)
 {
 
-	if (!src.data)
+	if (!src.data) //Check the image is exist
 	{
 		return 0;
 	}
@@ -17,26 +17,43 @@ int EdgeDection::detectBySobel(const Mat& src, Mat& dst, string direction)
 
 	uchar* pData = (uchar*)src.data;
 	uchar* dstData = (uchar*)dst.data;
+	
+	//If user want to detect egde in x of y direction
 	if (direction == "x" || direction == "X" || direction == "y" || direction == "Y")
 	{
 
 		Convolution con;
+		//if user choose x direction
 		if (direction == "x" || direction == "X") {
+			//Create kernel of X direction
 			con.initSobelXKernel();
 		}
+		//if user choose x direction
 		else if (direction == "y" || direction == "Y") {
+			//Create kernel of Y direction
 			con.initSobelYKernel();
 			
 		}
 		
+		//Traverse all the pixel
+		// Using padding by one line indent 
 		for (int y = 1; y < height - 1; y++)
 		{
 			for (int x = 1; x < width - 1; x++)
 			{
 
-				if (nChannel == 1) {
+				if (nChannel == 1)//If src image is grayscale
+				{
+
 					vector<uchar>data = createEmptyVector(con.size(), 0);
 					float value;
+
+					//Store grey value of 3x3 mask into data array
+					/*Example
+					* [y-1,x-1]	[y-1,x]	[y-1,x+1]
+					* [y,x-1]	[y,x]	[y,x+1]
+					* [y+1,x-1]	[y+1,x]	[y+1,x+1]
+					*/
 					data[0] = (uchar)pData[(y - 1) * widthStep + (x - 1) * nChannel];
 					data[1] = (uchar)pData[(y - 1) * widthStep + x * nChannel];
 					data[2] = (uchar)pData[(y - 1) * widthStep + (x + 1) * nChannel];
@@ -49,12 +66,16 @@ int EdgeDection::detectBySobel(const Mat& src, Mat& dst, string direction)
 					data[7] = (uchar)pData[(y + 1) * widthStep + x * nChannel];
 					data[8] = (uchar)pData[(y + 1) * widthStep + (x + 1) * nChannel];
 
+					//Then compute convolution
 					value = con.computeConvolution(data);
+					//Assignt to dst image at current x,y
 					dstData[y * widthStep + x * nChannel] = saturate_cast<uchar>(value);
 					
 				}
-				else if (nChannel == 3)
+				else if (nChannel == 3)//if source image is color image
 				{
+					//For each create channel we create an array to store data
+					//Then store B,G,R value of 3x3 mask to each array
 					vector<uchar> B = createEmptyVector(con.size(), 0);
 
 					float valueB;
@@ -103,7 +124,7 @@ int EdgeDection::detectBySobel(const Mat& src, Mat& dst, string direction)
 					R[7] = (uchar)pData[(y + 1) * widthStep + x * nChannel + 2];
 					R[8] = (uchar)pData[(y + 1) * widthStep + (x + 1) * nChannel + 2];
 
-
+					//Compute convolution of each channel and assign to dst image at current x,y and channel
 					valueB = con.computeConvolution(B);
 					dstData[y * widthStep + x * nChannel] = saturate_cast<uchar>(valueB);
 
@@ -121,7 +142,13 @@ int EdgeDection::detectBySobel(const Mat& src, Mat& dst, string direction)
 		return 1;
 	}
 		
-	else if(direction=="both") {
+	else if(direction=="both") 
+{
+	
+		
+		//With both direction, we compute gradient X and gradient Y the take the root sum of the squares of two variables
+		
+		//Create X and Y kernel
 		Convolution conX;
 		conX.initSobelXKernel();
 		Convolution conY;
@@ -146,13 +173,16 @@ int EdgeDection::detectBySobel(const Mat& src, Mat& dst, string direction)
 					data[7] = (uchar)pData[(y + 1) * widthStep + x * nChannel];
 					data[8] = (uchar)pData[(y + 1) * widthStep + (x + 1) * nChannel];
 
+					//Compute convolution Gradient X=valueX and gradient Y= valueY
 					valueX = conX.computeConvolution(data);
 					valueY = conY.computeConvolution(data);
+					//Assign to dst at current x,y 
 					dstData[y * widthStep + x * nChannel] = saturate_cast<uchar>(sqrt(valueX * valueX + valueY * valueY));
 					
 				}
 				else if (nChannel == 3)
 				{
+					//Like grey image 
 					vector<uchar> B = createEmptyVector(conX.size(), 0);
 
 					float valueBX, valueBY;
@@ -214,7 +244,7 @@ int EdgeDection::detectBySobel(const Mat& src, Mat& dst, string direction)
 					valueRX = conX.computeConvolution(R);
 					valueRY = conY.computeConvolution(R);
 					dstData[y * widthStep + x * nChannel + 2] = saturate_cast<uchar>(sqrt(valueRX * valueRX + valueRY * valueRY));
-					return 1;
+					
 				}
 				else return 0;
 			}
@@ -227,7 +257,7 @@ int EdgeDection::detectBySobel(const Mat& src, Mat& dst, string direction)
 
 int EdgeDection::detectByPrewit(const Mat& src, Mat& dst, string direction)
 {
-	if (!src.data)
+	if (!src.data)//Check the image is exist
 	{
 		return 0;
 	}
@@ -240,24 +270,41 @@ int EdgeDection::detectByPrewit(const Mat& src, Mat& dst, string direction)
 
 	uchar* pData = (uchar*)src.data;
 	uchar* dstData = (uchar*)dst.data;
+	//If user want to detect egde in x of y direction
 	if (direction == "x" || direction == "X" || direction == "y" || direction == "Y")
 	{
 
 		Convolution con;
+		//if user choose x direction
 		if (direction == "x" || direction == "X") {
+			//Create kernel of X direction
 			con.initPrewitXKernel();
 		}
+		//if user choose x direction
 		else if (direction == "y" || direction == "Y") {
+			//Create kernel of Y direction
 			con.initPrewitYKernel();
 		}
+
+		//Traverse all the pixel
+		// Using padding by one line indent 
 		for (int y = 1; y < height - 1; y++)
 		{
 			for (int x = 1; x < width - 1; x++)
 			{
 
-				if (nChannel == 1) {
+				if (nChannel == 1)//If src image is grayscale 
+				{
 					vector<uchar>data = createEmptyVector(con.size(), 0);
 					float value;
+
+					//Store grey value of 3x3 mask into data array
+					/*Example
+					* [y-1,x-1]	[y-1,x]	[y-1,x+1]
+					* [y,x-1]	[y,x]	[y,x+1]
+					* [y+1,x-1]	[y+1,x]	[y+1,x+1]
+					*/
+
 					data[0] = (uchar)pData[(y - 1) * widthStep + (x - 1) * nChannel];
 					data[1] = (uchar)pData[(y - 1) * widthStep + x * nChannel];
 					data[2] = (uchar)pData[(y - 1) * widthStep + (x + 1) * nChannel];
@@ -270,12 +317,17 @@ int EdgeDection::detectByPrewit(const Mat& src, Mat& dst, string direction)
 					data[7] = (uchar)pData[(y + 1) * widthStep + x * nChannel];
 					data[8] = (uchar)pData[(y + 1) * widthStep + (x + 1) * nChannel];
 
+					//Then compute convolution
 					value = con.computeConvolution(data);
+
+					//Assignt to dst image at current x,y
 					dstData[y * widthStep + x * nChannel] = saturate_cast<uchar>(value);
 					
 				}
 				else if (nChannel == 3)
 				{
+					//For each create channel we create an array to store data
+					//Then store B,G,R value of 3x3 mask to each array
 					vector<uchar> B = createEmptyVector(con.size(), 0);
 
 					float valueB;
@@ -324,7 +376,7 @@ int EdgeDection::detectByPrewit(const Mat& src, Mat& dst, string direction)
 					R[7] = (uchar)pData[(y + 1) * widthStep + x * nChannel + 2];
 					R[8] = (uchar)pData[(y + 1) * widthStep + (x + 1) * nChannel + 2];
 
-
+					//Compute convolution of each channel and assign to dst image at current x,y and channel
 					valueB = con.computeConvolution(B);
 					dstData[y * widthStep + x * nChannel] = saturate_cast<uchar>(valueB);
 
@@ -343,6 +395,9 @@ int EdgeDection::detectByPrewit(const Mat& src, Mat& dst, string direction)
 	}
 
 	else if (direction == "both") {
+		//With both direction, we compute gradient X and gradient Y the take the root sum of the squares of two variables
+
+		//Create X and Y kernel
 		Convolution conX;
 		conX.initPrewitXKernel();
 		Convolution conY;
@@ -367,13 +422,16 @@ int EdgeDection::detectByPrewit(const Mat& src, Mat& dst, string direction)
 					data[7] = (uchar)pData[(y + 1) * widthStep + x * nChannel];
 					data[8] = (uchar)pData[(y + 1) * widthStep + (x + 1) * nChannel];
 
+					//Compute convolution Gradient X=valueX and gradient Y= valueY
 					valueX = conX.computeConvolution(data);
 					valueY = conY.computeConvolution(data);
+					//Assign to dst at current x,y 
 					dstData[y * widthStep + x * nChannel] = saturate_cast<uchar>(sqrt(valueX * valueX + valueY * valueY));
 					
 				}
 				else if (nChannel == 3)
 				{
+					//Like grey image 
 					vector<uchar> B = createEmptyVector(conX.size(), 0);
 
 					float valueBX, valueBY;
@@ -447,7 +505,7 @@ int EdgeDection::detectByPrewit(const Mat& src, Mat& dst, string direction)
 
 int EdgeDection::detectByLaplace(const Mat& src, Mat& dst)
 {
-	if (!src.data)
+	if (!src.data)//Check the image is exist
 	{
 		return 0;
 	}
@@ -461,6 +519,7 @@ int EdgeDection::detectByLaplace(const Mat& src, Mat& dst)
 	uchar* pData = (uchar*)src.data;
 	uchar* dstData = (uchar*)dst.data;
 
+	//Create Laplace kernel
 	Convolution con;
 	con.initLaplaceKernel();
 	for (int y = 1; y < height - 1; y++)
@@ -483,12 +542,15 @@ int EdgeDection::detectByLaplace(const Mat& src, Mat& dst)
 				data[7] = (uchar)pData[(y + 1) * widthStep + x * nChannel];
 				data[8] = (uchar)pData[(y + 1) * widthStep + (x + 1) * nChannel];
 
+				//Caculate convolution 
 				value = con.computeConvolution(data);
+				//Assign to dst image at current X,Y
 				dstData[y * widthStep + x * nChannel] = saturate_cast<uchar>(value);
 
 			}
 			else if (nChannel == 3)
 			{
+				//Store color value to B,G,R array
 				vector<uchar> B = createEmptyVector(con.size(), 0);
 
 				float valueB;
@@ -537,7 +599,7 @@ int EdgeDection::detectByLaplace(const Mat& src, Mat& dst)
 				R[7] = (uchar)pData[(y + 1) * widthStep + x * nChannel + 2];
 				R[8] = (uchar)pData[(y + 1) * widthStep + (x + 1) * nChannel + 2];
 
-
+				//With each channel, compute convolution and assign to dst image at current x,y
 				valueB = con.computeConvolution(B);
 				dstData[y * widthStep + x * nChannel] = saturate_cast<uchar>(valueB);
 
@@ -648,17 +710,15 @@ int EdgeDection::detectByCanny(const Mat& src, Mat& dst)
 	dst = Mat(height, width, src.type());
 
 	uchar* pData = (uchar*)src.data;	
-
+	
+	//Filter image using gaussian Blur
 	Mat smoothImage;
 	gaussianBlur(src, smoothImage);
-
-	//imshow("Blur", smoothImage);
+	
+	//Find gradient and angle gradient of image
 	Mat gradient, angle;
 	findGradientAndAngle(smoothImage, gradient, angle);
 
-	//imshow("gradient", gradient);
-	//imshow("angle", angle);
-	//waitKey(0);
 	/*Create mask 3x3 to store value of 3x3 griadian and angle*/
 	vector<uchar> maskGradientIntensity;
 	vector<uchar> maskAngle;
@@ -761,6 +821,7 @@ int EdgeDection::detectByCanny(const Mat& src, Mat& dst)
 	uchar minVal = 256; // variable to determine the min of canny mask
 	uchar maxVal = 0; // variable to determine the max of canny mask
 	
+	//Hysteresis Thresholding
 	for (int y = 1; y < height - 1; y++)
 	{
 		for (int x = 1; x < width - 1; x++)
@@ -784,7 +845,7 @@ int EdgeDection::detectByCanny(const Mat& src, Mat& dst)
 			}
 		}
 	}
-	imshow("canny", cannyMask);
+
 	cannyMaskData = (uchar*)cannyMask.data;
 	uchar* dstData = (uchar*)dst.data;
 	for (int y = 0; y < height; y++)
@@ -809,6 +870,10 @@ vector<uchar> createEmptyVector(int size, int value)
 
 int gaussianBlur(const Mat& src, Mat& dst)
 {
+	/*
+	* Gaussian Blur like another Sobel of Prewit 
+	* edge detection method, we just use Gauss kernel
+	*/
 	if (!src.data)
 	{
 		return 0;
