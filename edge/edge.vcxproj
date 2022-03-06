@@ -24,6 +24,7 @@
     <ProjectGuid>{7f12315e-ecc1-44bd-9c79-093ad2ae2262}</ProjectGuid>
     <RootNamespace>edge</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <ProjectName>19127410_19127146_BT02</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
