@@ -17,7 +17,7 @@ public:
 
 	int findGradientAndAngle(const Mat& src, Mat& gradient, Mat& angle);
 
-	int detectByCany(const Mat& src, Mat& dst);
+	int detectByCanny(const Mat& src, Mat& dst);
 };
 
 vector<uchar> createEmptyVector(int size, int value);

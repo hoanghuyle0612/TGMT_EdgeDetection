@@ -633,7 +633,7 @@ int EdgeDection::findGradientAndAngle(const Mat& src, Mat& gradient, Mat& angle)
 	}
 }
 
-int EdgeDection::detectByCany(const Mat& src, Mat& dst)
+int EdgeDection::detectByCanny(const Mat& src, Mat& dst)
 {
 	if (!src.data)
 	{
@@ -751,7 +751,7 @@ int EdgeDection::detectByCany(const Mat& src, Mat& dst)
 		}
 	}
 	
-	imshow("nonmax", nonMaxImage);
+	
 
 	gradientData = (uchar*)gradient.data;
 	nonMaxData = (uchar*)nonMaxImage.data;
@@ -760,7 +760,7 @@ int EdgeDection::detectByCany(const Mat& src, Mat& dst)
 
 	uchar minVal = 256; // variable to determine the min of canny mask
 	uchar maxVal = 0; // variable to determine the max of canny mask
-
+	
 	for (int y = 1; y < height - 1; y++)
 	{
 		for (int x = 1; x < width - 1; x++)
@@ -784,6 +784,7 @@ int EdgeDection::detectByCany(const Mat& src, Mat& dst)
 			}
 		}
 	}
+	imshow("canny", cannyMask);
 	cannyMaskData = (uchar*)cannyMask.data;
 	uchar* dstData = (uchar*)dst.data;
 	for (int y = 0; y < height; y++)

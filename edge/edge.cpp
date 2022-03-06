@@ -17,7 +17,7 @@ int main()
     //imshow("src", source);
     Mat dst,cvSobel, absCvSobel;
     EdgeDection detector;
-    detector.detectByCany(source, dst);
+    detector.detectByCanny(source, dst);
     
     
 
