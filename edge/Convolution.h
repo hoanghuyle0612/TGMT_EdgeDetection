@@ -4,12 +4,13 @@ using namespace std;
 class Convolution
 {
 private:
-	vector<int> _kernel;
+	vector<float> _kernel;
 public:
 	Convolution();
-	void setKernel(vector<int> value);
+	Convolution(int size);
+	void setKernel(vector<float> value);
 	
-	vector<int> getKernel();
+	vector<float> getKernel();
 	int size();
 	void initSobelXKernel();
 	
@@ -21,6 +22,7 @@ public:
 
 	void initLaplaceKernel();
 	
+	void initGaussKernel();
 	
 	float computeConvolution(vector<uchar> data);
 

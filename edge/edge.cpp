@@ -12,12 +12,13 @@ int main()
 {
     std::cout << "Hello World!\n";
     Mat source = imread("download.png", IMREAD_GRAYSCALE);
-    Mat source1 = imread("download.png", IMREAD_ANYCOLOR);
+    Mat source1 = imread("download.png", IMREAD_GRAYSCALE);
    
-    imshow("src", source);
+    //imshow("src", source);
     Mat dst,cvSobel, absCvSobel;
     EdgeDection detector;
-    detector.detectByLaplace(source, dst);
+    detector.detectByCany(source, dst);
+    
     
 
     imshow("dst", dst);
@@ -25,6 +26,10 @@ int main()
     //Laplacian(source1, cvSobel, CV_16S, 1, 0);
     //convertScaleAbs(cvSobel, absCvSobel);
     //imshow("cvSobel", absCvSobel);
+    //GaussianBlur(source1, cvSobel,Size(5,5),0,0);
+    
+    Canny(source1, cvSobel, 100, 200);
+    imshow("CVGauss", cvSobel);
     waitKey(0);
 }
 
