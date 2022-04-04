@@ -24,6 +24,7 @@ int main(int argc, char** argv)
 		}
 		
 		Mat src = imread(path, IMREAD_ANYCOLOR);
+		Mat src1 = imread(path, IMREAD_ANYCOLOR);
 		Mat dst;
 
 		imshow("Source", src);
@@ -31,7 +32,25 @@ int main(int argc, char** argv)
 		if (detector.detectBySobel(src, dst, direction))
 		{
 			imshow("My Sobel", dst);
-		
+			
+			// opencv 
+			Mat img, img_gray, grad;
+			//GaussianBlur(src1, img, Size(3, 3), 0, 0, BORDER_DEFAULT);
+			// Convert the image to grayscale
+			//cvtColor(img, img_gray, COLOR_BGR2GRAY);
+			Mat grad_x, grad_y, grad_xy;
+			Mat abs_grad_x, abs_grad_y, abs_grad_xy;
+			//Sobel(src1, grad_x, CV_16S, 1, 0);
+			//Sobel(src1, grad_y, CV_16S, 0, 1);
+			Sobel(src1, grad_xy, CV_16S, 1, 1);
+			// converting back to CV_8U
+			//convertScaleAbs(grad_x, abs_grad_x);
+			//convertScaleAbs(grad_y, abs_grad_y);
+			convertScaleAbs(grad_xy, abs_grad_xy);
+			
+			//imshow("opencv", abs_grad_x);
+			//imshow("opencv", abs_grad_y);
+			imshow("opencv", abs_grad_xy);
 		}
 		else {
 			cout << "Error" << endl;
@@ -51,6 +70,7 @@ int main(int argc, char** argv)
 	   }
 
 	   Mat src = imread(path, IMREAD_ANYCOLOR);
+	   Mat src1 = imread(path, IMREAD_ANYCOLOR);
 	   Mat dst;
 
 	   imshow("Source", src);
@@ -59,7 +79,6 @@ int main(int argc, char** argv)
 	   {
 		   imshow("My Prewit", dst);
 		  
-
 	   }
 	   else {
 		   cout << "Error" << endl;
@@ -72,6 +91,7 @@ int main(int argc, char** argv)
 		String path = argv[1];
 
 		Mat src = imread(path, IMREAD_ANYCOLOR);
+		Mat src1 = imread(path, IMREAD_ANYCOLOR);
 		Mat dst;
 
 		imshow("Source", src);
@@ -80,6 +100,12 @@ int main(int argc, char** argv)
 		{
 			imshow("My Laplace", dst);
 			
+			// opencv 
+			Mat abs_dst, dst_cv;
+			Laplacian(src1, dst_cv, CV_16S);
+			// converting back to CV_8U
+			convertScaleAbs(dst, abs_dst);
+			imshow("opencv", abs_dst);
 		}
 		else {
 			cout << "Error" << endl;
